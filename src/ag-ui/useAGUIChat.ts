@@ -167,40 +167,45 @@ What would you like to build?`;
             setMessages((prev) =>
               prev.map((msg) =>
                 msg.id === assistantMessageId
-                  ? { ...msg, toolCalls: [...toolCalls] }
+                  ? { ...msg, toolCalls: toolCalls.map(tc => ({ ...tc })) }
                   : msg
               )
             );
             break;
 
-          case 'TOOL_CALL_ARGS':
-            const argToolCall = toolCalls.find((tc) => tc.id === event.toolCallId);
-            if (argToolCall) {
-              argToolCall.args = event.args;
+          case 'TOOL_CALL_ARGS': {
+            const argIndex = toolCalls.findIndex((tc) => tc.id === event.toolCallId);
+            if (argIndex !== -1) {
+              toolCalls[argIndex] = { ...toolCalls[argIndex], args: event.args };
               setMessages((prev) =>
                 prev.map((msg) =>
                   msg.id === assistantMessageId
-                    ? { ...msg, toolCalls: [...toolCalls] }
+                    ? { ...msg, toolCalls: toolCalls.map(tc => ({ ...tc })) }
                     : msg
                 )
               );
             }
             break;
+          }
 
-          case 'TOOL_CALL_END':
-            const endToolCall = toolCalls.find((tc) => tc.id === event.toolCallId);
-            if (endToolCall) {
-              endToolCall.result = event.result;
-              endToolCall.status = 'completed';
+          case 'TOOL_CALL_END': {
+            const endIndex = toolCalls.findIndex((tc) => tc.id === event.toolCallId);
+            if (endIndex !== -1) {
+              toolCalls[endIndex] = { 
+                ...toolCalls[endIndex], 
+                result: event.result, 
+                status: 'completed' 
+              };
               setMessages((prev) =>
                 prev.map((msg) =>
                   msg.id === assistantMessageId
-                    ? { ...msg, toolCalls: [...toolCalls] }
+                    ? { ...msg, toolCalls: toolCalls.map(tc => ({ ...tc })) }
                     : msg
                 )
               );
             }
             break;
+          }
 
           case 'ERROR':
             console.error('AG-UI Error:', event.error);
