@@ -1,9 +1,3 @@
-/**
- * AG-UI Chat Widget
- *
- * A chat interface for conversational flow building.
- */
-
 import { useState, useRef, useEffect, memo } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,10 +5,6 @@ import { useAGUIChat } from "@/ag-ui/useAGUIChat";
 import { useUIStore } from "@/store/uiStore";
 import { Send, PanelLeftClose, Bot, User, Wrench, Loader2 } from "lucide-react";
 import type { ChatMessage, ToolCall } from "@/ag-ui/types";
-
-// ============================================================================
-// Tool Call Display Component
-// ============================================================================
 
 const ToolCallDisplay = memo(({ toolCall }: { toolCall: ToolCall }) => {
   const statusIcon = {
@@ -34,10 +24,6 @@ const ToolCallDisplay = memo(({ toolCall }: { toolCall: ToolCall }) => {
 });
 
 ToolCallDisplay.displayName = "ToolCallDisplay";
-
-// ============================================================================
-// Message Component
-// ============================================================================
 
 const MessageBubble = memo(({ message }: { message: ChatMessage }) => {
   const isUser = message.role === "user";
@@ -108,12 +94,7 @@ const MessageBubble = memo(({ message }: { message: ChatMessage }) => {
 
 MessageBubble.displayName = "MessageBubble";
 
-// ============================================================================
-// Main Chat Widget
-// ============================================================================
-
 export const ChatWidget = memo(() => {
-  // Using OpenAI - make sure API key is from the correct project with credits
   const { messages, isLoading, sendMessage } = useAGUIChat({
     clientType: "openai",
   });
@@ -136,13 +117,6 @@ export const ChatWidget = memo(() => {
     await sendMessage(message);
     inputRef.current?.focus();
   };
-
-  // Quick action buttons
-  const quickActions = [
-    { label: "Add node", action: "Add a new node" },
-    { label: "3 nodes", action: "Add 3 nodes for a simple flow" },
-    { label: "Help", action: "Help" },
-  ];
 
   return (
     <div className="flex flex-col h-full">
@@ -171,22 +145,6 @@ export const ChatWidget = memo(() => {
         ))}
         <div ref={messagesEndRef} />
       </div>
-
-      {/* Quick Actions */}
-      {messages.length <= 2 && (
-        <div className="px-3 pb-2 flex gap-2 flex-wrap">
-          {quickActions.map((qa) => (
-            <button
-              key={qa.label}
-              onClick={() => sendMessage(qa.action)}
-              disabled={isLoading}
-              className="text-xs px-2 py-1 rounded-full border border-primary/30 text-primary hover:bg-primary/10 transition-colors disabled:opacity-50"
-            >
-              {qa.label}
-            </button>
-          ))}
-        </div>
-      )}
 
       {/* Input */}
       <form onSubmit={handleSubmit} className="p-3 border-t">

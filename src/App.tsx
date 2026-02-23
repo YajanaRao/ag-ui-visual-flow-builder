@@ -1,22 +1,21 @@
-import { ReactFlowProvider } from '@xyflow/react';
-import { FlowCanvas } from './components/canvas/FlowCanvas';
-import { NodeSidebar } from './components/sidebar/NodeSidebar';
-import { ChatSidebar } from './components/sidebar/ChatSidebar';
-import { JsonPreview } from './components/preview/JsonPreview';
-import { Button } from './components/ui/button';
-import { Input } from './components/ui/input';
-import { useFlowStore } from './store/flowStore';
-import { useUIStore } from './store/uiStore';
-import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts';
-import { Plus, Upload, AlertCircle, PanelLeftOpen } from 'lucide-react';
-import { useRef } from 'react';
+import { ReactFlowProvider } from "@xyflow/react";
+import { FlowCanvas } from "./components/canvas/FlowCanvas";
+import { NodeSidebar } from "./components/sidebar/NodeSidebar";
+import { ChatSidebar } from "./components/sidebar/ChatSidebar";
+import { JsonPreview } from "./components/preview/JsonPreview";
+import { Button } from "./components/ui/button";
+import { Input } from "./components/ui/input";
+import { useFlowStore } from "./store/flowStore";
+import { useUIStore } from "./store/uiStore";
+import { useKeyboardShortcuts } from "./hooks/useKeyboardShortcuts";
+import { Plus, Upload, AlertCircle, PanelLeftOpen } from "lucide-react";
+import { useRef } from "react";
 
 function App() {
   const { addNode, importFlow, validationErrors } = useFlowStore();
   const { isChatSidebarVisible, showChatSidebar } = useUIStore();
   const fileInputRef = useRef<HTMLInputElement>(null);
-  
-  // Enable keyboard shortcuts
+
   useKeyboardShortcuts();
 
   const handleAddNode = () => {
@@ -37,9 +36,8 @@ function App() {
       };
       reader.readAsText(file);
     }
-    // Reset input
     if (fileInputRef.current) {
-      fileInputRef.current.value = '';
+      fileInputRef.current.value = "";
     }
   };
 
@@ -85,7 +83,7 @@ function App() {
       <div className="flex flex-1 overflow-hidden">
         {/* Left Sidebar - AI Assistant */}
         <ChatSidebar />
-        
+
         {/* Center - Canvas */}
         <div className="flex-1 relative">
           {/* Show sidebar toggle button when sidebar is hidden */}
@@ -104,7 +102,7 @@ function App() {
             <FlowCanvas />
           </ReactFlowProvider>
         </div>
-        
+
         {/* Right Sidebar - Node Properties */}
         <NodeSidebar />
       </div>
@@ -115,4 +113,4 @@ function App() {
   );
 }
 
-export default App
+export default App;
