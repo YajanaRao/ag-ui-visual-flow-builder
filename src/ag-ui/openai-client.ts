@@ -84,7 +84,7 @@ export class OpenAIAGUIClient implements IAGUIClient {
       apiKey,
       dangerouslyAllowBrowser: true,
       // In dev, use Vite proxy with full URL; in prod, use default
-      baseURL: isDev ? 'http://localhost:5173/api/openai/v1' : undefined,
+      baseURL: isDev ? `${window.location.origin}/api/openai/v1` : undefined,
     });
 
     // Initialize with system message
@@ -129,7 +129,7 @@ export class OpenAIAGUIClient implements IAGUIClient {
 
       // Call OpenAI API
       let response = await this.openai.chat.completions.create({
-        model: 'gpt-4o-mini', // Fast and cheap, good for function calling
+        model: 'gpt-4.1-nano',
         messages: this.chatHistory,
         tools: convertToolsToOpenAIFormat(this.tools),
         tool_choice: 'auto',
